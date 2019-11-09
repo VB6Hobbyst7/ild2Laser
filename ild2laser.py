@@ -94,7 +94,6 @@ def generate_effects():
 
     if os.path.exists(effect_file):
         with open(effect_file, "w+") as f:
-            print(effects_contents)
             for i in effects_contents:
                 f.write(i)
 
