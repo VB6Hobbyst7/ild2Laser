@@ -39,8 +39,12 @@ def copy_files():
             print(f"{f} is not a valid .ild file and cannot be processed.")
         
         # Checks if the file already exists, copies if it doesn't
-        if not os.path.exists(f'./Processed/ildfiles/{newFileName}'):
-            shutil.copy(f'./To_Do/{f}', f'./Processed/ildfiles/{newFileName}')
+        try:
+            if not os.path.exists(f'./Processed/ildfiles/{newFileName}'):
+                shutil.copy(f'./To_Do/{f}', f'./Processed/ildfiles/{newFileName}')
+        except:
+            pass
+        
 
 def generate_playlist():
     playlist_contents = ''
