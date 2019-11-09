@@ -144,6 +144,7 @@ if __name__ == "__main__":
     ### Running Logic ###
     #####################
 
+    os.chdir(os.path.dirname(__file__))
     cwd = os.getcwd()
     to_do_dir = f'{cwd}/To_Do'
     ildfiles_dir = f'{cwd}/Processed/ildfiles'
