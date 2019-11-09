@@ -10,7 +10,7 @@ def change_to_eigth(file):
     return f"{file[0:8].strip()}.ild"
 
 def remove_non_ascii(text):
-    return ''.join([i for i in text if ord(i) < 128])
+    return ''.join([i for i in text if ord(i) < 128 and i != ' '])
 
 def copy_files():
     # Initializing
@@ -29,12 +29,12 @@ def copy_files():
             newFileName = remove_non_ascii(newFileName)
 
             # If there are duplicate names going to be written, change the name with an increasing count integer substitution
-            if len(files_arr) == 0 or not any(x in newFileName for x in files_arr):
-                files_arr.append(newFileName)
+            if len(new_files_arr) == 0 or not any(x in newFileName for x in new_files_arr):
+                new_files_arr.append(newFileName)
             else:
                 newFileName = f"{newFileName[0:5]}{count}.ild"
                 count += 1
-                files_arr.append(newFileName)
+                new_files_arr.append(newFileName)
         else:
             print(f"{f} is not a valid .ild file and cannot be processed.")
         
@@ -102,7 +102,7 @@ def generate_effects():
                 f.write(i)
 
     with open(effect_file, "a+") as f:
-        for file in files_arr:
+        for file in new_files_arr:
             if not any(file in s for s in effects_contents):
                 no_exists_array.append(file)
         for item in no_exists_array:
@@ -118,14 +118,14 @@ if __name__ == "__main__":
     # Playlist File Name:
     playlist_filename = "PlayList.pla"
     # Effect file name:
-    effect_filename = "sami.eff"
+    effect_filename = "EFFEC001.eff"
 
     # Variables that alter how the item is displayed (leave empty if none required)
     effect_vars = {
     # Time
-    'TI': '5',
+    'TI': '',
     # 
-    'SI': '22',
+    'SI': '',
     # Rotation
     'RO': '',
     # 
@@ -133,7 +133,7 @@ if __name__ == "__main__":
     # 
     'HR': '',
     # 
-    'HB': '23',
+    'HB': '',
     # 
     'VR': '',
     # 
@@ -166,7 +166,7 @@ if __name__ == "__main__":
 
     # Array of items in the To_Do directory
     files = [f for f in os.listdir('To_Do')]
-    files_arr = []
+    new_files_arr = []
 
     copy_files()
     generate_playlist()
