@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+# Documentation on laser hardware and how to use:
+# https://www.gagalight.com/u_file/1704/file/ecc52a0460.pdf
+
 import shutil
 import os
 import sys
@@ -15,7 +18,6 @@ def remove_non_ascii(text):
 def copy_files():
     # Initializing
     count = 0
-
     for f in files:
         # If the file ends in .ild (case insensitive), it will proceed...
         if re.match('.*\.[iI][lL][dD]$', f) is not None:
@@ -24,10 +26,8 @@ def copy_files():
                 newFileName = change_to_eigth(f)
             else:
                 newFileName = f
-            
             # Strip Non-Ascii characters from the filename should they exist
             newFileName = remove_non_ascii(newFileName)
-
             # If there are duplicate names going to be written, change the name with an increasing count integer substitution
             if len(new_files_arr) == 0 or not any(x in newFileName for x in new_files_arr):
                 new_files_arr.append(newFileName)
@@ -37,14 +37,12 @@ def copy_files():
                 new_files_arr.append(newFileName)
         else:
             print(f"{f} is not a valid .ild file and cannot be processed.")
-        
         # Checks if the file already exists, copies if it doesn't
         try:
             if not os.path.exists(f'./Processed/ildfiles/{newFileName}'):
                 shutil.copy(f'./To_Do/{f}', f'./Processed/ildfiles/{newFileName}')
         except:
             pass
-        
 
 def generate_playlist():
     playlist_contents = ''
@@ -64,7 +62,6 @@ def generate_playlist():
                 count = 1
     else:
         count = 1
-    
     with open(playlist_file, "a+") as f:
         if not any(effect_filename in s for s in playlist_contents):
             f.write(f"{count},({effect_filename})\n")
@@ -87,20 +84,16 @@ def generate_effects():
                 count = max(new_arr) + 1
             except:
                 count = 1
-
     else:
         count = 1
-
     total_effects = ''
     for effect in effect_vars:
         if effect_vars.get(effect):
             total_effects += f"{effect}={effect_vars[effect]},"
-
     if os.path.exists(effect_file):
         with open(effect_file, "w+") as f:
             for i in effects_contents:
                 f.write(i)
-
     with open(effect_file, "a+") as f:
         for file in new_files_arr:
             if not any(file in s for s in effects_contents):
@@ -120,27 +113,27 @@ if __name__ == "__main__":
     # Effect file name:
     effect_filename = "EFFEC001.eff"
 
-    # Variables that alter how the item is displayed (leave empty if none required)
+    # Variables that alter how the item is displayed (leave empty if none required). Use values 0-255.
     effect_vars = {
     # Time
     'TI': '',
-    # 
+    # Scale (Big - Small Bounce)
     'SI': '',
-    # Rotation
-    'RO': '',
-    # 
-    'CO': '',
-    # 
+    # Rotation on X axis
     'HR': '',
-    # 
-    'HB': '',
-    # 
+    # Rotation on Y axis
     'VR': '',
-    # 
+    # Rotation on Z axis
+    'RO': '',
+    # Colour shift speed adjustment
+    'CO': '',
+    # Position on X axis (positive or negative)
+    'HB': '',
+    # Position on Y axis (positive or negative)
     'VB': '',
-    # 
+    # Visible Point Speed Adjustment
     'DR': '',
-    # 
+    # Scanner Rate Speed Adjustment
     'BE': '',
     }
 
@@ -164,7 +157,7 @@ if __name__ == "__main__":
     if not os.path.exists(PlayList_dir):
         os.makedirs(PlayList_dir)
 
-    # Array of items in the To_Do directory
+    # Array of items currently in the To_Do directory
     files = [f for f in os.listdir('To_Do')]
     new_files_arr = []
 
